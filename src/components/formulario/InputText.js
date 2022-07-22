@@ -5,6 +5,7 @@ const InputText = ({
   icono = false,
   onChange = null,
   onkeydown = null,
+  title= "",
 }) => {
   let clases = "frm__input ";
   if (icono) clases = clases + "frm__input__icono";
@@ -19,6 +20,7 @@ const InputText = ({
       onChange={onChange}
       value={value}
       onKeyDown={onkeydown}
+      title={title}
     />
   );
 };

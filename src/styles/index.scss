@@ -55,9 +55,17 @@ main {
   border-radius: $border_radius_principal;
   outline: none;
   width: 100%;
-
   &:focus {
     border: 1px solid $color_focus_input;
+    &::after {
+      content: attr(title);
+      position: absolute;
+      background: red;
+      right: 10;
+      top: 0;
+      display: block;
+
+    }
   }
 }
 
@@ -93,6 +101,21 @@ main {
 
 .contenedor__input {
   position: relative;
+
+  &__tooltip {
+      display: none;
+  }
+  
+  &:hover > &__tooltip {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-weight: bold;
+      display: block;
+      transition: .4s;
+    }
 }
 
 .input__icon {
@@ -135,6 +158,14 @@ main {
         height: 90px;
       }
     }
+
+    &__validacion {
+        grid-column: 3/1;
+        grid-row: 3/1;
+        place-content: center;
+        display: grid;
+        font-size: 14px;
+    }
   }
   &__item {
     border: 1px solid #7e57c2;
@@ -173,35 +204,6 @@ main {
       }
     }
   }
-}
-
-.main__principal {
-  margin: 15px 0px;
-}
-
-
-.contenido__center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.main__table__contenido__btn {
-  margin: 0px 15px;
-  color: $color_primario;
-  display: inline-block;
-  background: none;
-  cursor: pointer;
-  outline: none;
-  border: none;
-}
-
-
-.main__table__vacio {
-  text-align: center;
-  margin: 10px 0px;
-  font-weight: bold;
-  color: red;
 }
 
 .disabled__boton {

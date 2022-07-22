@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { getPokemon, getPokomons } from "../services/PokemonService";
 import pokk from "../models/pokemon";
+import SERVER from "../utils/server";
 
 const PokemonContext = createContext();
 
@@ -9,14 +10,21 @@ const PokemonProvider = ({ children }) => {
     const [pokemon, setPokemon] = useState(pokk);
     const [next, setNext] = useState(null);
     const [previous, setPrevious] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
+    const [cargando, setCargando] = useState(true);
+    const [pagina, setPagina] = useState(1);
 
     useEffect(() => {
       cargarPokemons(null);
     }, []);
+    useEffect(() => {
+      setNumeroPagina();
+    }, [next]);
 
     const arrayColores = ["color1", "color2", "color3", "color4"];
 
     const cargarPokemons = async (url) => {
+      setCargando(true);
       try {
         const data = await getPokomons(url);
         const { results, next, previous } = data;
@@ -35,7 +43,38 @@ const PokemonProvider = ({ children }) => {
         setPrevious(previous);
         setPokemons(arrayPokemons);
       } catch (error) {}
+      finally {
+        setCargando(false);
+      }
     };
+    const filtraPokemon = async (e) => {
+      if (e.key === "Enter") {
+        setPokemons([]);
+        setCargando(true);
+        if (busqueda.length <= 0) {
+          cargarPokemons(null);
+          return;
+        }
+        const url = `${SERVER.host}/${busqueda}`
+        let res = await getPokemon(url);
+        if(res !== null) {
+          setPokemons([
+            {
+              id: res.id,
+              nombre: res.name,
+              imagen: res.sprites.front_default,
+              url,
+            },
+          ]);
+        }
+        else{
+          setPokemons([])
+        }
+        setNext(null);
+        setPrevious(null);
+        setCargando(false);
+      }
+    }
     const getSprites = (sprites) => {
       if (sprites !== null) {
         return Object.values(sprites).filter((a) => a !== null).slice(0, 4);
@@ -98,6 +137,21 @@ const PokemonProvider = ({ children }) => {
       cargarPokemons(previous);
     };
 
+    const setNumeroPagina = () => {
+      if (next === null){
+        setPagina(1);
+        return
+      }
+      let numeros = next
+        .split("?")[1]
+        .split("&")
+        .map((item) => parseInt(item.split("=")[1]));
+      let desp = numeros[0],
+          ant = numeros[1];
+      let pag = desp / ant;
+      setPagina(pag);
+    }
+
   const data = {
     pokemon,
     pokemons,
@@ -107,6 +161,11 @@ const PokemonProvider = ({ children }) => {
     next,
     arrayColores,
     buscarPokemon,
+    busqueda,
+    setBusqueda,
+    filtraPokemon,
+    cargando,
+    pagina
   };
   return (
     <PokemonContext.Provider value={data}>{children}</PokemonContext.Provider>

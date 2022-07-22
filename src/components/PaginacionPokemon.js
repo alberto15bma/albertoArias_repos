@@ -3,7 +3,7 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import PokemonContext from "../context/PokemonContext";
 
 function PaginacionPokemon() {
-  const { next, previous, nextPokemons, previousPokemons } =
+  const { next, previous, nextPokemons, previousPokemons, pagina } =
     useContext(PokemonContext);
   const previousBoton = previous === null ? "disabled__boton" : "";
   const nextBoton     = next === null ? "disabled__boton" : "";
@@ -13,6 +13,7 @@ function PaginacionPokemon() {
         <AiOutlineLeft />
          Atrás
       </button>
+      <span><b>Pag # </b>{pagina}</span>
       <button onClick={nextPokemons} className={nextBoton}>
         Siguiente
         <AiOutlineRight />

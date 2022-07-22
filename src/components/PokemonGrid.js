@@ -2,7 +2,7 @@ import { useContext } from "react";
 import PokemonContext from "../context/PokemonContext";
 
 function PokemonGrid() {
-  const { pokemons, arrayColores, buscarPokemon } = useContext(PokemonContext);
+  const { pokemons, arrayColores, buscarPokemon, cargando } = useContext(PokemonContext);
   return (
     <section className="container__grid">
       {pokemons && pokemons.length > 0 ? (
@@ -17,8 +17,12 @@ function PokemonGrid() {
             <strong>{pokemon.nombre}</strong>
           </div>
         ))
+      ) : cargando === true ? (
+        <strong className="container__grid__validacion">Cargando...</strong>
       ) : (
-        <strong>Cargando...</strong>
+        <strong className="container__grid__validacion">
+          No se encontró el pokemon
+        </strong>
       )}
     </section>
   );

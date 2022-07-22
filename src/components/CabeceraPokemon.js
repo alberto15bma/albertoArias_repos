@@ -4,7 +4,7 @@ import PokemonContext from "../context/PokemonContext";
 import InputText from "./formulario/InputText";
 
 const CabeceraPokemon = () => {
-  const { buscarPokemon, setBusqueda, busqueda } = useContext(PokemonContext);
+  const { filtraPokemon, setBusqueda, busqueda } = useContext(PokemonContext);
 
   return (
     <header className="header">
@@ -17,9 +17,13 @@ const CabeceraPokemon = () => {
             nombre="Buscar"
             icono={true}
             value={busqueda}
-            onkeydown={buscarPokemon}
+            onkeydown={filtraPokemon}
             onChange={(e) => setBusqueda(e.target.value)}
+            maxlength="16"
           />
+          <span className="contenedor__input__tooltip">
+            Presiona ENTER para buscar
+          </span>
         </div>
       </div>
     </header>

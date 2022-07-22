@@ -5,7 +5,7 @@ import SERVER from "../utils/server";
  *
  * @author Alberto Arias
  * @version 1.0
- * @since 19/07/2022
+ * @since 20/07/2022
  */
 const getPokomons = async (url) => {
   let res = [];
@@ -21,7 +21,7 @@ const getPokomons = async (url) => {
  *
  * @author Alberto Arias
  * @version 1.0
- * @since 19/07/2022
+ * @since 20/07/2022
  */
 const getPokemon = async (url) => {
   let res = null;
